@@ -36,9 +36,12 @@ module Pad()
   {
     union()
     {
-      // Pad 
-      tz(0.2) cube_round([80,60,0.4], 10, center=true);
-      tz(0.6) cube_round([75,58,0.4], 10, center=true);
+      // Pad
+      color("green") hull()
+      { 
+        tz(0.2) cube_round([80,60,0.4], 10, center=true);
+        tz(0.6) cube_round([75,58,0.4], 10, center=true);
+      }
       
       // Kegel, außen
       difference()
@@ -63,6 +66,18 @@ module Pad()
         r2 = ring_nr == ringe ? ring : ring+d;
         for (w=[0:90:270]) // 4 Segmente
         {
+//          hull() 
+//          {
+//            {
+//              tz(ring_hoehe - ring_dach_hoehe)
+//              ring_segment(ring_dach_hoehe, r1, r2, w-17, w+17, $fn=50);
+//            }
+//            {              
+//              tz(ring_hoehe - ring_dach_hoehe + 1)
+//              ring_segment(ring_dach_hoehe-1, r1, r2, w-17-5, w+17+5, $fn=50);
+//            }
+//          }
+          
           for (o=[0:0.25:1]) // Stufen, damit es besser rein geht
           {
             color([o, 1-o, 1])
@@ -142,8 +157,8 @@ module Dorn()
 
 module Feder()
 {
-  r1 = 0.5+ring_groesster-2*ring_breite;
-  r2 = ring_groesster-0.5;
+  r1 = 1.0+ring_groesster-2*ring_breite;
+  r2 = ring_groesster-1.0;
   for (a=[0,90])
     tx(-0.5) ring_segment(5+ring_hoehe, r1, r2, a+25, a+90-25); // Stöpsel
   
