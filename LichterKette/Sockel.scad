@@ -2,21 +2,49 @@ include <mjk.scad>
 
 e=0.05;
 
+tx(60) Sockel();
+tx(60) ty(100)  Kugel1();
 
-tz(10) rotx(180) Sockel();
-tz(27) difference()
+//sphere(60, $fn=10);
+
+AddSockel() difference() {Star3d(30); Star3d(29); }
+
+module Star3d(r=30)
 {
-    union()
-    {
-        sphere(d=60);
-        color("red") for (a=[0:36]) rotz(a*10) rotx(a*10) roty(a*3) 
-        cylinder(d=61, h=1, center=true);
-    }
-    sphere(d=59);
-    mz() cylinder(d=25, h=60);
-    tz(-50-27) cube(100, true);
+for (a=[7.5:15:90]) 
+{
+  step = 360/ (12.6*cos(a)+1) ;
+    echo(step);
+    for(b=[0:step:360]) rotz(b) rotx(a) 
+   hull(){
+       cube([.1,2*r,.1], true); 
+       sphere(r-2); 
+   }
+}
 }
 
+module AddSockel(h=27)
+{
+    Sockel();
+    tz(h) children();
+}
+
+module Kugel1()
+{
+    Sockel();
+    tz(27) difference()
+    {
+        union()
+        {
+            sphere(d=60);
+            color("red") for (a=[0:36]) rotz(a*10) rotx(a*10) roty(a*3) 
+            cylinder(d=61, h=1, center=true);
+        }
+        sphere(d=59);
+        mz() cylinder(d=25, h=60);
+        tz(-50-27) cube(100, true);
+    }
+}
 
 
 tx(100) union()
@@ -27,11 +55,10 @@ tx(100) union()
 }
 
 
-tx(60) Sockel();
 
 module Sockel()
 {
-    difference()
+    tz(10) rotx(180) difference()
     {
         cylinder(d=30, h=10);
         tz(-1) cylinder(d=21, h=12);
