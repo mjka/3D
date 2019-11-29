@@ -7,7 +7,8 @@ tx(60) ty(100)  Kugel1();
 
 //sphere(60, $fn=10);
 
-AddSockel() difference() {Star3d(30); Star3d(29); }
+AddSockel(24) difference() {Star3d(30); Star3d(29); }
+//Star3d(30);
 
 module Star3d(r=30)
 {
@@ -18,7 +19,8 @@ for (a=[7.5:15:90])
     for(b=[0:step:360]) rotz(b) rotx(a) 
    hull(){
        cube([.1,2*r,.1], true); 
-       sphere(r-2); 
+       rotx(90) cylinder(r=r/3, h=2*(r*0.7), center=true, $fn=6);
+       //sphere(r-2); 
    }
 }
 }
@@ -26,7 +28,14 @@ for (a=[7.5:15:90])
 module AddSockel(h=27)
 {
     Sockel();
-    tz(h) children();
+    difference()
+    {
+        tz(h) children();
+        tz(-50) cube(100, true); 
+        mz() cylinder(d=25, h=60);
+
+    }
+
 }
 
 module Kugel1()
